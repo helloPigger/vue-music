@@ -1,0 +1,39 @@
+@import "@/common/scss/variable.scss";
+
+@mixin nowrap() {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+@mixin nowraps($line:2) {
+    display: -webkit-box; // text-overflow: ellipsis;
+    overflow: hidden; // word-break: break-all;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: $line;
+}
+
+@mixin flex($direcion:row, $display:block, $wrap:nowrap, $justify:space-around) {
+    display: if($display==block, flex, inline-flex);
+    flex-direction: $direcion;
+    flex-wrap: $wrap;
+    justify-content: $justify;
+}
+
+@mixin title($paddingL:9px, $fontsize:17px, $height:20px, $marginB:14px) {
+    padding-left: $paddingL;
+    font-size: $fontsize;
+    height: $height;
+    line-height: $height;
+    margin-bottom: $marginB;
+    position: relative;
+    &::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 3px;
+        height: 100%;
+        background-color: $theme-color;
+    }
+}
