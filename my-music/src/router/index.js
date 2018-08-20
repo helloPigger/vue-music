@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Recommend from '@/components/recommend/recommend'
 import RecommendMore from '@/components/recommend/recommend-more'
-import SongList from '@/components/song-list/song-list'
+import RecommendDetail from '@/components/recommend/recommend-detail'
 
 import HotRank from '@/components/hot-rank/hot-rank'
 import Search from '@/components/search/search'
@@ -22,11 +22,11 @@ export default new Router({
       children: [
         {
           path: 'recommendMore',
-          component: RecommendMore
+          component: RecommendMore,
         },
         {
           path: ':id',
-          component: SongList
+          component: RecommendDetail
         }
       ]
     },

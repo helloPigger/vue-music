@@ -1,20 +1,14 @@
 import axios from 'axios'
 import jsonp from 'jsonp'
-
-export const jsonpOption = {
-  param: 'jsonpCallback'
-}
-
 export const SUCCESS_CODE = 0
 
 export function getAxios (baseURL, url, data, callback) {
-  axios({
+  return axios({
     method: 'get',
     baseURL: baseURL,
     url: url + (url.indexOf('?') < 0 ? '?' : '&') + param(data)
   }).then((res) => {
-    // if (res.data.code === SUCCESS_CODE) console.log(res.data)
-    callback(res)
+    return Promise.resolve(res)
   }).catch((err) => {
     console.log(err)
   })
@@ -44,6 +38,37 @@ export function getJsonp (url, data, option) {
         reject(err)
       }
     })
+  })
+}
+
+//host 与 referer不一致导致无效的接口
+export function getSongList (id) {
+  const url = '/getSongList'
+  const data = {
+    type: 1,
+    json: 1,
+    utf8: 1,
+    onlysong: 0,
+    disstid: id,
+    loginUin: 0,
+    hostUin: 0,
+    platform: 'yqq',
+    needNewCode: 0,
+    g_tk: 5381,
+    format: 'json',
+    inCharset: 'utf8',
+    outCharset: 'utf-8',
+    notice: 0
+  }
+
+  return axios({
+    method: 'get',
+    url: url,
+    params:data
+  }).then((res) => {
+    return Promise.resolve(res.data)
+  }).catch((err) => {
+    console.log(err)
   })
 }
 

@@ -27,7 +27,6 @@ export default {
         return {}
       }
     }
-
   },
   components: {
     swiper,

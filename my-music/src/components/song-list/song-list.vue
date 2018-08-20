@@ -1,104 +1,135 @@
 <template>
   <div :class="$style.song_list">
-    <h2><i class="iconfont icon-zuo" :class="$style.icon" @click="back"></i>每日新歌1111111111111</h2>  
-    <new-list :items="newMusicList"></new-list>
-    <router-view></router-view>
+    <h2 :class="$style.title"><i class="iconfont icon-zuo"  @click="back"></i>{{title}}</h2> 
+    <div :class="$style.content">
+      <div :class="$style.top">
+        <div :class="$style.bg">
+          <img :src="image">
+          <p>{{name}}</p>
+        </div>
+      </div>
+      <div :class="$style.list">
+        <ul>
+          <li :class="$style.title" v-show="items.length"><i class="iconfont icon-bofang" :class="$style.icon"></i>播放全部（共{{items.length}}首）</li>            
+          <li v-for="(item, index) in items" :key=index :class="$style.item">
+            <div :class="$style.text">
+              <h2>{{item.songname}}</h2>
+              <p>{{getSinger(item)}}</p>
+            </div>
+          </li>
+      </ul>
+      </div>
+      <loading v-show="!items.length"/>
+    </div>
   </div>
 </template>
-<script>
-import NewList from '@/components/recommend/new-list'
-import { getAxios, SUCCESS_CODE } from '@/js/api'
 
+<script>
+import Loading from '@/common/loading/loading'
 export default {
   props: {
+    title: {
+      type: String,
+      default: ''
+    },
+    name: {
+      type: String,
+      default: ''
+    },
+    image: {
+      type: String,
+      default: ''
+    },
     items: {
-      tyoe: Array,
+      type: Array,
       default () {
         return []
       }
     }
   },
-  created () {
-    this.getRecommendSongList()
-  },
   methods: {
     back () {
-      this.$router.go(-1)
+      this.$router.push('/recommend')
     },
-    getRecommendSongList () {
-      const data = {
-        type: 1,
-        json: 1,
-        utf8: 1,
-        onlysong: 0,
-        disstid: 4255737918,
-        loginUin: 0,
-        hostUin: 0,
-        platform: 'yqq',
-        needNewCode: 0,
-        g_tk: 5381,
-        format: 'json',
-        inCharset: 'utf8',
-        outCharset: 'utf-8',
-        notice: 0
+    getSinger (item) {
+      let singer = item.singer
+      let singerName = ''
+      for (let i = 0, length = singer.length; i < length; i++) {
+        singerName += singer[i].name + " / "
+        if (length === 1) singerName = singer[i].name
       }
-      getAxios('/bannerApi', '/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg', data, (res) => {
-        if (res.data.code === SUCCESS_CODE) this.bannerList = res.data.data.slider
-      })
+      return item.albumname + " - " + singerName
     }
   },
   components: {
-    NewList
+    Loading
   }
-
 }
 </script>
-<style lang="scss">
-.iconfont {
-  font-size: 20px;
-  color: #999;
-}
-</style>
 
 <style lang="scss" module>
 @import "@/common/scss/mixin.scss";
+@import "@/common/scss/variable.scss";
 .song_list {
-  padding-top: 20px;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #fff;
+  z-index: 200;
   .title {
-    @include title();
+    @include topTitle();
   }
-  .container {
-    .item {
-      @include flex($justify: flex-start);
-      height: 60px;
-      padding: 6px 0 6px 10px;
-      border-bottom: 1px solid #ddd;
-      position: relative;
-      .image {
+  .content {
+    margin-top: 40px;
+    .top {
+      background-color: $theme-color;
+      .bg {
+        @include flex();
+        align-items: center;
+        padding: 10px 10px 20px 10px;
         img {
-          height: 100%;
-          width: auto;
-        }
-      }
-      .text {
-        padding-left: 10px;
-        width: 70%;
-        h2 {
-          @include nowrap();
-          font-size: 15px;
-          height: 28px;
-          line-height: 28px;
+          width: 90px;
+          height: auto;
         }
         p {
-          @include nowrap();
-          font-size: 12px;
-          color: #888;
+          padding-left: 20px;
+          color: #fff;
+          font-weight: 300;
+          font-size: 14px;
         }
       }
-      .icon {
-        position: absolute;
-        top: 20px;
-        right: 14px;
+    }
+    .list {
+      background-color: #fff;
+      li {
+        .icon {
+          color: #000;
+        }
+        @include flex($justify: flex-start);
+        padding: 6px 10px;
+        border-bottom: 1px solid #ddd;
+        position: relative;
+        background-color: #fff;
+        color: #000;
+        .text {
+          padding-left: 10px;
+          h2 {
+            @include nowrap();
+            font-size: 14px;
+            height: 24px;
+            line-height: 24px;
+          }
+          p {
+            @include nowrap();
+            font-size: 12px;
+            color: #888;
+          }
+        }
+      }
+      .title {
+        border-radius: 2px 2px / 0.2px 2px;
       }
     }
   }

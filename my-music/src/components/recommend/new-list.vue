@@ -5,14 +5,12 @@
       <ul>
         <li v-for="(item, index) in items" :key=index :class="$style.item">
           <div :class="$style.image">
-            <!-- <img :src="getImgSrc(item)"> -->
             <img v-lazy="getImgSrc(item)">
           </div>
           <div :class="$style.text">
             <h2>{{item.name}}</h2>
             <p>{{getSinger(item)}}</p>
           </div>
-          <i class="iconfont icon-bofang" :class="$style.icon"></i>
         </li>
       </ul>
     </div>
@@ -46,12 +44,6 @@ export default {
 
 }
 </script>
-<style lang="scss">
-.iconfont {
-  font-size: 20px;
-  color: #999;
-}
-</style>
 
 <style lang="scss" module>
 @import "@/common/scss/mixin.scss";
@@ -87,11 +79,6 @@ export default {
           font-size: 12px;
           color: #888;
         }
-      }
-      .icon {
-        position: absolute;
-        top: 20px;
-        right: 14px;
       }
     }
   }

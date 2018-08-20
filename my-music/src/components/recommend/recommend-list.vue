@@ -1,20 +1,27 @@
 <template>
   <div :class="$style.recom_list">
-    <h2 @click="recommendMore">为你推荐<i class="iconfont icon-you"></i></h2>  
+    <h2 @click="recommendMore(itemsAll)">为你推荐<i class="iconfont icon-you" :class="$style.icon_you"></i></h2>  
     <div :class="$style.container">
-      <div v-for="(item, index) in items" :key=index @click="recomList(item.id)">
+      <div v-for="(item, index) in items" :key=index @click="recomList(item)">
         <img :src="item.cover">
-        <span :class="$style.num">{{getListenNumber(item.listen_num)}}</span>
-        <span class="iconfont icon-erji" :class="$style.icon"></span>
+        <span :class="$style.num">
+          {{getListenNumber(item.listen_num)}}
+          <span class="iconfont icon-erji" :class="$style.icon"></span>
+          </span>
         <p :class="$style.title">{{item.title}}</p>
       </div>
     </div>
   </div>
-  
 </template>
 <script>
 export default {
   props: {
+    itemsAll: {
+      type: Array,
+      default () {
+        return []
+      }
+    },
     items: {
       type: Array,
       default () {
@@ -30,12 +37,11 @@ export default {
         return num
       }
     },
-    recommendMore () {
-      this.$emit('recomMore')
+    recommendMore (itemsAll) {
+      this.$emit('recomMore', itemsAll)
     },
     recomList (item) {
       this.$emit('recomList', item)
-
     }
   }
 
@@ -49,6 +55,9 @@ export default {
   padding-top: 20px;
   h2 {
     @include title();
+    .icon_you {
+      color: #999;
+    }
   }
   .container {
     @include flex($wrap: wrap);
@@ -69,11 +78,14 @@ export default {
         top: 2px;
         right: 5px;
         color: #fff;
+        .icon {
+          position: absolute;
+          left: -20px;
+          top: -1px;
+          padding: 0;
+        }
       }
-      .icon {
-        @extend .num;
-        right: 46px;
-      }
+
       .title {
         @include nowraps();
         padding: 6px 2px 0 6px;

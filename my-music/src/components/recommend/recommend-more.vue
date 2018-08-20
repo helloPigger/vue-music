@@ -1,30 +1,24 @@
 <template>
   <div :class="$style.recom_more" class="recom-more">
-    <h2><i class="iconfont icon-zuo" :class="$style.icon" @click="back"></i>为你推荐</h2>  
+    <h2><i class="iconfont icon-zuo" @click="back"></i>为你推荐</h2>  
     <div :class="$style.container">
-      <div v-for="(item, index) in recommendList" :key=index>
+      <div v-for="(item, index) in recommend" :key=index @click="recomMoreList(item)">
         <img v-lazy="item.cover">
-        <span :class="$style.num">{{getListenNumber(item.listen_num)}}</span>
-        <span class="iconfont icon-erji" :class="$style.icon"></span>
+        <span :class="$style.num">
+          {{getListenNumber(item.listen_num)}}
+          <span class="iconfont icon-erji" :class="$style.icon"></span>
+        </span>
         <p :class="$style.title">{{item.title}}</p>
       </div>
     </div>
-    <loading v-show="!recommendList.length"/>
+    <loading v-show="!recommend.length"/>
     </div>
 </template>
 
 <script>
-import { getAxios, getJsonp, jsonpOption, SUCCESS_CODE } from '@/js/api'
 import Loading from '@/common/loading/loading'
+import { mapMutations, mapGetters } from 'vuex'
 export default {
-  data () {
-    return {
-      recommendList: []
-    }
-  },
-  created () {
-    this.getRecommendList()
-  },
   methods: {
     getListenNumber (num) {
       if (Number(num) >= 100000) {
@@ -34,39 +28,28 @@ export default {
       }
     },
     back () {
-      this.$router.go(-1)
+      this.$router.push('/recommend')
     },
-    getRecommendList () {
-      const p = { "comm": { "ct": 24 }, "recomPlaylist": { "method": "get_hot_recommend", "param": { "async": 1, "cmd": 2 }, "module": "playlist.HotRecommendServer" } }
-      const dataParam = encodeURIComponent(JSON.stringify(p))
-      const data = {
-        g_tk: 5381,
-        loginUin: 0,
-        hostUin: 0,
-        format: 'jsonp',
-        inCharset: 'utf8',
-        outCharset: 'utf-8',
-        notice: 0,
-        platform: 'yqq',
-        needNewCode: 0,
-        data: dataParam
-      }
-      getAxios('/recommendApi', '/cgi-bin/musicu.fcg', data, (res) => {
-        if (res.data.code === SUCCESS_CODE) {
-          this.recommendList = res.data.recomPlaylist.data.v_hot
-          this.recommendList6 = this.recommendList
-        }
+    recomMoreList (item) {
+      this.$router.push({
+        path: `/recommend/${item.content_id}`
       })
-    }
+      this.setRecommendItem(item)
+    },
+    ...mapMutations({
+      setRecommendItem: 'SET_RECOMMENDITEM'
+    })
   },
   components: {
     Loading
+  },
+  computed: {
+    ...mapGetters([
+      'recommend'
+    ])
   }
-
 }
 </script>
-
-
 <style lang="scss" module>
 @import "@/common/scss/mixin.scss";
 @import "@/common/scss/variable.scss";
@@ -78,29 +61,10 @@ export default {
   bottom: 0;
   z-index: 200;
   background-color: $bg-color;
-  overflow-y: scroll;
-  overflow-x: hidden;
 
   h2 {
-    height: 40px;
-    line-height: 40px;
-    color: #fff;
-    font-size: 17px;
-    position: fixed;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 201;
-    background-color: $theme-color;
-    .icon {
-      color: #fff;
-      padding-left: 4px;
-      padding-right: 10px;
-      vertical-align: middle;
-    }
+    @include topTitle();
   }
-
   .container {
     @include flex($wrap: wrap);
     margin-top: 40px;
@@ -121,10 +85,12 @@ export default {
         top: 2px;
         right: 5px;
         color: #fff;
-      }
-      .icon {
-        @extend .num;
-        right: 46px;
+        .icon {
+          position: absolute;
+          left: -20px;
+          top: -1px;
+          padding: 0;
+        }
       }
       .title {
         @include nowraps();
