@@ -1,7 +1,7 @@
 <template>
   <div :class="$style.tabs" class="tabs">
     <router-link tag="div" to="/recommend"><span>推荐音乐</span></router-link>
-    <router-link tag="div" to="/hot-rank"><span>热歌榜</span></router-link>
+    <router-link tag="div" to="/rank"><span>排行榜</span></router-link>
     <router-link tag="div" to="/search"><span>搜索</span></router-link>
   </div>
 </template>
@@ -14,14 +14,14 @@
     span {
       color: $theme-color;
     }
-    &::after{
-      content:"";
-      width:100%;
+    &::after {
+      content: "";
+      width: 100%;
       height: 2px;
-      color:$theme-color;
+      color: $theme-color;
       background-color: $theme-color;
       position: absolute;
-      bottom:0;
+      bottom: 0;
       right: 0;
     }
   }
@@ -34,7 +34,7 @@
   @include flex();
   width: 100%;
   background-color: #fff;
-  border-bottom:1px solid #eee;
+  border-bottom: 1px solid #eee;
   position: fixed;
   top: 64px;
   left: 0;

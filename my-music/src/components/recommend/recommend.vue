@@ -1,9 +1,9 @@
 <template>
   <div class="recommend">
-    <slider :swiperOption=options :items="bannerList" :data="bannerList"/>
-    <recommend-list :items="recommendList6" :itemsAll="recommendList" @recomMore="recomMore" @recomList="recomList"></recommend-list>
+    <slider :swiperOption=options :items="bannerList"/>
+    <recommend-list title="为你推荐" :items="recommendList6" :itemsAll="recommendList" @recomMore="recomMore" @recomList="recomList"></recommend-list>
     <router-view></router-view>
-    <new-list :items="newMusicList"></new-list>
+    <new-list title = "最新音乐" :items="newMusicList"></new-list>
     <loading v-show="!recommendList.length"/>
   </div>
 </template>
@@ -26,7 +26,7 @@ export default {
       options: {
         loop: true,
         autoplay: true,
-        autoplayStopOnLast: false,
+        disableOnInteraction: false,
         pagination: {
           el: '.swiper-pagination'
         }

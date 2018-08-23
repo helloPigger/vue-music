@@ -1,6 +1,5 @@
 <template>
-  <swiper :options="swiperOption">
-    <!-- <swiper-slide v-for="(item,index) in sliderList" :key=index> -->
+  <swiper :options="swiperOption" v-if="items.length">
     <swiper-slide v-for="(item,index) in items" :key=index>
       <router-link :to="{name: item.linkUrl}">
         <img :src="item.picUrl">

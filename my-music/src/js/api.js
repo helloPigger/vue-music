@@ -33,7 +33,7 @@ export function getJsonp (url, data, option) {
   return new Promise((resolve, reject) => {
     jsonp(url, option, (err, res) => {
       if (!err) {
-        reslove(res)
+        resolve(res)
       } else {
         reject(err)
       }
@@ -64,7 +64,7 @@ export function getSongList (id) {
   return axios({
     method: 'get',
     url: url,
-    params:data
+    params: data
   }).then((res) => {
     return Promise.resolve(res.data)
   }).catch((err) => {

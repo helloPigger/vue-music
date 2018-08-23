@@ -8,7 +8,8 @@
           <p>{{name}}</p>
         </div>
       </div>
-      <div :class="$style.list">
+
+      <scroll :class="$style.list" :songs="items" :data="items" @scroll="scroll">
         <ul>
           <li :class="$style.title" v-show="items.length"><i class="iconfont icon-bofang" :class="$style.icon"></i>播放全部（共{{items.length}}首）</li>            
           <li v-for="(item, index) in items" :key=index :class="$style.item">
@@ -17,15 +18,18 @@
               <p>{{getSinger(item)}}</p>
             </div>
           </li>
-      </ul>
-      </div>
+        </ul>
+      </scroll>
       <loading v-show="!items.length"/>
+      <div :class="$style.bgScroll"></div>
     </div>
   </div>
 </template>
 
 <script>
 import Loading from '@/common/loading/loading'
+import Scroll from '@/common/scroll/scroll'
+
 export default {
   props: {
     title: {
@@ -47,6 +51,17 @@ export default {
       }
     }
   },
+  data () {
+    return {
+      options: {
+        direction: 'vertical',
+        slidesPerView: 'auto',
+        freeMode: true,
+        mousewheel: true
+      },
+      scrollY: 0
+    }
+  },
   methods: {
     back () {
       this.$router.push('/recommend')
@@ -59,10 +74,23 @@ export default {
         if (length === 1) singerName = singer[i].name
       }
       return item.albumname + " - " + singerName
+    },
+    scroll (e) {
+      // let y = e.changedTouches[0].clientY 
+      // let y1 = e.changedTouches[0].screenY 
+      // this.scrollY = y
+      // console.log(y)
+      // console.log(y1 - y)
     }
   },
+  watch: {
+    // scrollY (newY) {
+    //   console.log("newY:"+newY)
+    // }
+  },
   components: {
-    Loading
+    Loading,
+    Scroll
   }
 }
 </script>
@@ -83,6 +111,7 @@ export default {
   }
   .content {
     margin-top: 40px;
+    height: 100%;
     .top {
       background-color: $theme-color;
       .bg {
@@ -115,6 +144,7 @@ export default {
         color: #000;
         .text {
           padding-left: 10px;
+          width: 100%;
           h2 {
             @include nowrap();
             font-size: 14px;
@@ -131,6 +161,13 @@ export default {
       .title {
         border-radius: 2px 2px / 0.2px 2px;
       }
+    }
+    .bgScroll {
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      top: 160px;
+      left: 0;
     }
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <div :class="$style.recom_list">
-    <h2 @click="recommendMore(itemsAll)">为你推荐<i class="iconfont icon-you" :class="$style.icon_you"></i></h2>  
+    <h2 @click="recommendMore(itemsAll)" v-show="items.length">{{title}}<i class="iconfont icon-you" :class="$style.icon_you"></i></h2>  
     <div :class="$style.container">
       <div v-for="(item, index) in items" :key=index @click="recomList(item)">
         <img :src="item.cover">
@@ -16,6 +16,10 @@
 <script>
 export default {
   props: {
+    title: {
+      type: String,
+      default: ''
+    },
     itemsAll: {
       type: Array,
       default () {

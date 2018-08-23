@@ -4,7 +4,7 @@ import Recommend from '@/components/recommend/recommend'
 import RecommendMore from '@/components/recommend/recommend-more'
 import RecommendDetail from '@/components/recommend/recommend-detail'
 
-import HotRank from '@/components/hot-rank/hot-rank'
+import Rank from '@/components/rank/rank'
 import Search from '@/components/search/search'
 
 Vue.use(Router)
@@ -31,9 +31,9 @@ export default new Router({
       ]
     },
     {
-      path: '/hot-rank',
-      name: 'HotRank',
-      component: HotRank
+      path: '/rank',
+      name: 'Rank',
+      component: Rank
     },
     {
       path: '/search',

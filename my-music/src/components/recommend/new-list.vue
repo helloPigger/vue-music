@@ -1,6 +1,6 @@
 <template>
   <div :class="$style.new_list">
-    <h2 :class="$style.title">最新音乐</h2>
+    <h2 :class="$style.title" v-show="items.length">{{title}}</h2>
     <div :class="$style.container">
       <ul>
         <li v-for="(item, index) in items" :key=index :class="$style.item">
@@ -19,6 +19,10 @@
 <script>
 export default {
   props: {
+    title: {
+      type: String,
+      default: ""
+    },
     items: {
       tyoe: Array,
       default () {
@@ -60,6 +64,7 @@ export default {
       border-bottom: 1px solid #ddd;
       position: relative;
       .image {
+        width: 20%;
         img {
           height: 100%;
           width: auto;
