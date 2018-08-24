@@ -19,7 +19,7 @@
     justify-content: $justify;
 }
 
-@mixin title($paddingL:9px, $fontsize:17px, $height:20px, $marginB:14px) {
+@mixin title($paddingL:18px, $fontsize:17px, $height:20px, $marginB:14px) {
     padding-left: $paddingL;
     font-size: $fontsize;
     height: $height;
@@ -29,7 +29,7 @@
     &::after {
         content: "";
         position: absolute;
-        left: 0;
+        left: 10px;
         top: 0;
         width: 3px;
         height: 100%;

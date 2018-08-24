@@ -1,5 +1,6 @@
 const state = {
   recommend: {},
-  recommendItem: {}
+  recommendItem: {},
+  rankGuanFang: {}
 }
 export default state

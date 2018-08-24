@@ -4,7 +4,7 @@
       <h2 :class="$style.title">官方榜</h2>
       <div :class="$style.container">
         <ul>
-          <li v-for="(item, index) in rankName[0].List" :key=index :class="$style.item">
+          <li v-for="(item, index) in rankName[0].List" :key=index :class="$style.item" @click="guanfangList(item)">
             <div :class="$style.image">
               <img v-lazy="item.MacListPicUrl">
             </div>
@@ -25,11 +25,14 @@
       </div>
     </div>
    </div>
+    <router-view/>
   </div>
 </template>
 
 <script>
 import { getJsonp } from '@/js/api'
+import { getAxios, SUCCESS_CODE } from '@/js/api'
+import { mapMutations } from 'vuex'
 
 export default {
   data () {
@@ -41,7 +44,14 @@ export default {
     this.getRankName()
   },
   methods: {
+    guanfangList (item) {
+      this.$router.push({
+        path: `/rank/${item.topID}`
+      })
+      this.SET_RANKGF(item)
 
+      if (item.topID === 201) { console.log('mv接口单独处理') }
+    },
     quanqiuList () {
       console.log('跳转到列表')
     },
@@ -63,6 +73,9 @@ export default {
         this.rankName = res
       })
     },
+    ...mapMutations({
+      SET_RANKGF: 'SET_RANKGF'
+    })
   },
 
   components: {
@@ -119,6 +132,8 @@ export default {
     .container {
       @include flex($wrap: wrap);
       justify-content: flex-start;
+      padding: 0 10px;
+
       div {
         width: 33.3%;
         padding-right: 2px;

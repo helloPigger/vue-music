@@ -2,7 +2,7 @@
   <div class="recommend">
     <slider :swiperOption=options :items="bannerList"/>
     <recommend-list title="为你推荐" :items="recommendList6" :itemsAll="recommendList" @recomMore="recomMore" @recomList="recomList"></recommend-list>
-    <router-view></router-view>
+    <router-view/>
     <new-list title = "最新音乐" :items="newMusicList"></new-list>
     <loading v-show="!recommendList.length"/>
   </div>

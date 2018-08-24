@@ -65,6 +65,7 @@ export default {
   }
   .container {
     @include flex($wrap: wrap);
+    padding: 0 10px;
     div {
       width: 33.3%;
       padding-right: 2px;

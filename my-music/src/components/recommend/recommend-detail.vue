@@ -1,7 +1,6 @@
 <template>
   <div class="recommend_detail">
-    <song-list :items="recomDetailList" title="歌单" :name="recommendItem.title" :image="recommendItem.cover"/>
-    <!-- <router-view></router-view> -->
+    <song-list :items="recomDetailList" title="歌单" :name="recommendItem.title" :image="recommendItem.cover"></song-list>
   </div>
 </template>
 <script>
@@ -26,6 +25,7 @@ export default {
       }
       getSongList(this.recommendItem.content_id).then((res) => {
         if (res.code === SUCCESS_CODE) this.recomDetailList = res.cdlist[0].songlist
+        console.log(res.cdlist[0].songlist)
       })
     }
   },
@@ -38,4 +38,7 @@ export default {
     ])
   }
 }
+
 </script>
+
+
