@@ -2,20 +2,13 @@
   <div :class="$style.song_list">
     <h2 :class="$style.title"><i class="iconfont icon-zuo"  @click="back"></i>{{title}}</h2> 
     <div :class="$style.content">
-      <div :class="$style.top">
-        <div :class="$style.bg">
-          <img :src="image">
-          <p>{{name}}</p>
-        </div>
-      </div>
       <slot/>
-
       <scroll :class="$style.list" :songs="items" :data="items" @scroll="scroll">
         <ul>
-          <li :class="$style.title" v-show="items.length"><i class="iconfont icon-bofang" :class="$style.icon"></i>播放全部（共{{items.length}}首）</li>            
+          <li :class="$style.title" v-show="items.length"><i class="iconfont icon-bofang" :class="$style.icon"></i>播放全部（共{{number}}首）</li>            
           <li v-for="(item, index) in items" :key=index :class="$style.item">
             <div :class="$style.text">
-              <h2>{{item.songname}}</h2>
+              <h2><span v-show="sign">{{index + 1}} . </span>{{item.songname || item.data.songname}}</h2>
               <p>{{getSinger(item)}}</p>
             </div>
           </li>
@@ -31,27 +24,30 @@
 import Loading from '@/common/loading/loading'
 import Scroll from '@/common/scroll/scroll'
 
-
 export default {
   props: {
     title: {
       type: String,
       default: ''
     },
-    name: {
+    bgStyle: {
       type: String,
       default: ''
     },
-    image: {
-      type: String,
-      default: ''
+    number: {
+      type: Number,
+      default: 0
     },
     items: {
       type: Array,
       default () {
         return []
       }
-    }
+    },
+    sign: {
+      type: Boolean,
+      default: false
+    },
   },
   data () {
     return {
@@ -67,10 +63,10 @@ export default {
   },
   methods: {
     back () {
-      this.$router.push('/recommend')
+      this.$emit('back')
     },
     getSinger (item) {
-      let singer = item.singer
+      let singer = item.singer || item.data.singer
       let singerName = ''
       for (let i = 0, length = singer.length; i < length; i++) {
         singerName += singer[i].name + " / "
@@ -115,26 +111,6 @@ export default {
   .content {
     margin-top: 40px;
     height: 100%;
-    .top {
-      background-color: $theme-color;
-
-      .bg {
-        @include flex();
-        align-items: center;
-        padding: 10px 10px 20px 10px;
-        img {
-          width: 90px;
-          height: auto;
-        }
-        p {
-          padding-left: 20px;
-          color: #fff;
-          font-weight: 300;
-          font-size: 14px;
-        }
-      }
-    }
-
     .list {
       background-color: #fff;
       li {

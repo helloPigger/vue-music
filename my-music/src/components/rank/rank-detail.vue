@@ -1,25 +1,36 @@
 <template>
   <div class="rank_detail">
-    <rank-song-list :items="rankDetailList" title="" :date="rankGuanFang.showtime" :bgStyle="bgStyle" :number="totalNumber"></rank-song-list>
+    <song-list :items="rankDetailList" :bgStyle="bgStyle" :number="totalNumber" :sign="sign" @back=back>
+      
+      <div :class="$style.bg" :style="bgStyle">
+        <p>更新日期：{{rankGuanFang.showtime}}</p>
+      </div>
+
+    </song-list>
   </div>
 </template>
 <script>
 import NewList from '@/components/recommend/new-list'
 import { getAxios, getSongList, SUCCESS_CODE } from '@/js/api'
 import { mapGetters } from 'vuex'
-import RankSongList from '@/components/rank/rank-song-list'
+import SongList from '@/components/song-list/song-list'
+
 
 export default {
   data () {
     return {
       rankDetailList: [],
-      totalNumber: 0
+      totalNumber: 0,
+      sign: true
     }
   },
   created () {
     this.getRankGFList()
   },
   methods: {
+    back () {
+      this.$router.push('/rank')
+    },
     getRankGFList () {
       let data = {
         tpl: 3,
@@ -48,7 +59,7 @@ export default {
     }
   },
   components: {
-    RankSongList
+    SongList
   },
   computed: {
     bgStyle () {
@@ -61,5 +72,23 @@ export default {
 }
 
 </script>
+
+<style <style lang="scss" module>
+.bg {
+  width: 100%;
+  height: 150px;
+  position: relative;
+  p {
+    padding-left: 20px;
+    color: #fff;
+    font-weight: 300;
+    font-size: 14px;
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+  }
+}
+</style>
+
 
 
