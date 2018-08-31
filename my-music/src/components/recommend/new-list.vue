@@ -3,20 +3,22 @@
     <h2 :class="$style.title" v-show="items.length">{{title}}</h2>
     <div :class="$style.container">
       <ul>
-        <li v-for="(item, index) in items" :key=index :class="$style.item">
+        <li v-for="(item, index) in items" :key=index :class="$style.item" @click="player(item)">
           <div :class="$style.image">
             <img v-lazy="getImgSrc(item)">
           </div>
           <div :class="$style.text">
             <h2>{{item.name}}</h2>
-            <p>{{getSinger(item)}}</p>
+            <p>{{singer(item)}}</p>
           </div>
         </li>
       </ul>
     </div>
   </div>
 </template>
+
 <script>
+import { getSinger } from '@/js/utils'
 export default {
   props: {
     title: {
@@ -31,18 +33,15 @@ export default {
     }
   },
   methods: {
+    player (item) {
+      this.$emit('player', item)
+    },
     getImgSrc (item) {
       let src = item.album.mid
       return `//y.gtimg.cn/music/photo_new/T002R90x90M000${src}.jpg?max_age=2592000`
     },
-    getSinger (item) {
-      let singer = item.singer
-      let singerName = ''
-      for (let i = 0, length = singer.length; i < length; i++) {
-        singerName += singer[i].name + " / "
-        if (length === 1) singerName = singer[i].name
-      }
-      return singerName
+    singer (item) {
+     return getSinger(item)
     }
   }
 

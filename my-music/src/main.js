@@ -15,8 +15,7 @@ FastClick.attach(document.body)
 Vue.use(VueAwesomeSwiper)
 Vue.use(VueLazyload, {
   // preLoad: 1.3,
-  loading: "/static/img/img-default.png"
-  // attempt: 1
+  loading: "/static/img/img-default.png",
 })
 /* eslint-disable no-new */
 new Vue({

@@ -1,6 +1,7 @@
 <template>
   <div class="recommend_detail">
-    <song-list :items="recomDetailList" title="歌单" :number="totalNumber" :sign="sign" @back=back>
+    <h2 :class="$style.title"><i class="iconfont icon-zuo"  @click="back"></i>歌单</h2> 
+    <song-list :items="recomDetailList" :number="totalNumber" :sign="sign" @back=back>
       <div :class="$style.top">
         <div :class="$style.bg">
           <img :src="recommendItem.cover">
@@ -29,7 +30,7 @@ export default {
   },
   methods: {
     back () {
-      this.$router.push('/recommend')
+      this.$router.go(-1)
     },
     getRecommendSongList () {
       if (!this.recommendItem.content_id) {
@@ -59,12 +60,16 @@ export default {
 <style lang="scss" module>
 @import "@/common/scss/mixin.scss";
 @import "@/common/scss/variable.scss";
+.title {
+  @include topTitle();
+}
 .top {
   background-color: $theme-color;
   .bg {
     @include flex();
     align-items: center;
     padding: 10px 10px 20px 10px;
+    margin-top: 40px;
     img {
       width: 90px;
       height: auto;

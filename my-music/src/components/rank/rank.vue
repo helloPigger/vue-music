@@ -1,10 +1,10 @@
 <template>
-  <div :class="$style.rank" class="rank" v-if="rankName.length">
+  <div :class="$style.rank" class="rank">
     <div :class="$style.guanfang_list">
-      <h2 :class="$style.title">官方榜</h2>
+      <h2 :class="$style.title" v-show="rangGFList.length">官方榜</h2>
       <div :class="$style.container">
         <ul>
-          <li v-for="(item, index) in rankName[0].List" :key=index :class="$style.item" @click="guanfangList(item)">
+          <li v-for="(item, index) in rangGFList" :key=index :class="$style.item" @click="guanfangList(item)">
             <div :class="$style.image">
               <img v-lazy="item.MacListPicUrl">
             </div>
@@ -17,15 +17,16 @@
     </div>
 
     <div :class="$style.quanqiu_list">
-    <h2>{{rankName[1].GroupName}}</h2>  
+    <h2 v-show="rangQQList.length">全球榜</h2>  
     <div :class="$style.container">
-      <div v-for="(item, index) in rankName[1].List" :key=index @click="quanqiuList(item)">
+      <div v-for="(item, index) in rangQQList" :key=index @click="quanqiuList(item)">
         <img v-lazy="item.MacListPicUrl">
         <p :class="$style.title">{{item.ListName}}</p>
       </div>
     </div>
    </div>
     <router-view/>
+    <loading v-show="!rankList.length"/>
   </div>
 </template>
 
@@ -33,11 +34,15 @@
 import { getJsonp } from '@/js/api'
 import { getAxios, SUCCESS_CODE } from '@/js/api'
 import { mapMutations } from 'vuex'
+import Loading from '@/common/loading/loading'
+
 
 export default {
   data () {
     return {
-      rankName: []
+      rankList: [],
+      rangGFList: [],
+      rangQQList: [],
     }
   },
   created () {
@@ -45,12 +50,17 @@ export default {
   },
   methods: {
     guanfangList (item) {
-      this.$router.push({
-        path: `/rank/${item.topID}`
-      })
+      if (item.topID === 201) {
+        this.$router.push({
+          path: '/rank/mv'
+        })
+      }
+      else {
+        this.$router.push({
+          path: `/rank/${item.topID}`
+        })
+      }
       this.SET_RANKGF(item)
-
-      if (item.topID === 201) { console.log('mv接口单独处理') }
     },
     quanqiuList () {
       console.log('跳转到列表')
@@ -70,16 +80,17 @@ export default {
         prefix: 'jsonCallback'
       }
       getJsonp('https://c.y.qq.com/v8/fcg-bin/fcg_v8_toplist_opt.fcg', data, option).then((res) => {
-        this.rankName = res
+        this.rankList = res
+        this.rangGFList = res[0].List
+        this.rangQQList = res[1].List
       })
     },
     ...mapMutations({
       SET_RANKGF: 'SET_RANKGF'
     })
   },
-
   components: {
-
+    Loading
   }
 }
 </script>

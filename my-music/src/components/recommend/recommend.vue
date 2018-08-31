@@ -3,7 +3,7 @@
     <slider :swiperOption=options :items="bannerList"/>
     <recommend-list title="为你推荐" :items="recommendList6" :itemsAll="recommendList" @recomMore="recomMore" @recomList="recomList"></recommend-list>
     <router-view/>
-    <new-list title = "最新音乐" :items="newMusicList"></new-list>
+    <new-list title = "最新音乐" :items="newMusicList" @player="player"></new-list>
     <loading v-show="!recommendList.length"/>
   </div>
 </template>
@@ -50,6 +50,10 @@ export default {
       })
       //此id需传到二级路由页面 vuex
       this.setRecommendItem(item)
+    },
+    player (item) {
+      this.$router.push(`/player`)
+      console.log(item)
     },
     getBannerList () {
       const data = {

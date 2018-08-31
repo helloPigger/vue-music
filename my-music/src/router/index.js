@@ -6,6 +6,7 @@ import RecommendDetail from '@/components/recommend/recommend-detail'
 
 import Rank from '@/components/rank/rank'
 import RankDetail from '@/components/rank/rank-detail'
+import MvDetail from '@/components/rank/mv-detail'
 import Search from '@/components/search/search'
 
 Vue.use(Router)
@@ -36,6 +37,10 @@ export default new Router({
       name: 'Rank',
       component: Rank,
       children: [
+        {
+          path: 'mv',
+          component: MvDetail
+        },
         {
           path: ':topId',
           component: RankDetail

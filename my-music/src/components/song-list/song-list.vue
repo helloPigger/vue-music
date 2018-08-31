@@ -1,15 +1,14 @@
 <template>
   <div :class="$style.song_list">
-    <h2 :class="$style.title"><i class="iconfont icon-zuo"  @click="back"></i>{{title}}</h2> 
     <div :class="$style.content">
       <slot/>
       <scroll :class="$style.list" :songs="items" :data="items" @scroll="scroll">
         <ul>
           <li :class="$style.title" v-show="items.length"><i class="iconfont icon-bofang" :class="$style.icon"></i>播放全部（共{{number}}首）</li>            
-          <li v-for="(item, index) in items" :key=index :class="$style.item">
+          <li v-for="(item, index) in items" :key=index :class="$style.item" @click="playerItem(index)">
             <div :class="$style.text">
               <h2><span v-show="sign">{{index + 1}} . </span>{{item.songname || item.data.songname}}</h2>
-              <p>{{getSinger(item)}}</p>
+              <p>{{singer(item,'true')}}</p>
             </div>
           </li>
         </ul>
@@ -23,13 +22,10 @@
 <script>
 import Loading from '@/common/loading/loading'
 import Scroll from '@/common/scroll/scroll'
-
+import { getSinger } from '@/js/utils'
 export default {
+
   props: {
-    title: {
-      type: String,
-      default: ''
-    },
     bgStyle: {
       type: String,
       default: ''
@@ -62,17 +58,11 @@ export default {
     }
   },
   methods: {
-    back () {
-      this.$emit('back')
+    singer (item) {
+      return getSinger(item, true)
     },
-    getSinger (item) {
-      let singer = item.singer || item.data.singer
-      let singerName = ''
-      for (let i = 0, length = singer.length; i < length; i++) {
-        singerName += singer[i].name + " / "
-        if (length === 1) singerName = singer[i].name
-      }
-      return item.albumname + " - " + singerName
+    playerItem (index) {
+      this.$emit('playerItem', index)
     },
     scroll (e) {
       // let y = e.changedTouches[0].clientY 
@@ -109,7 +99,7 @@ export default {
     @include topTitle();
   }
   .content {
-    margin-top: 40px;
+    // margin-top: 40px;
     height: 100%;
     .list {
       background-color: #fff;

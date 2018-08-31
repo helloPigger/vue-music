@@ -1,4 +1,4 @@
 
 <template>
-  <div>搜素</div>
+  <div>搜索</div>
 </template>

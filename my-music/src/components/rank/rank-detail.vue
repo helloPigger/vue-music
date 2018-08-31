@@ -1,18 +1,17 @@
 <template>
   <div class="rank_detail">
-    <song-list :items="rankDetailList" :bgStyle="bgStyle" :number="totalNumber" :sign="sign" @back=back>
-      
+    <song-list :items="rankDetailList" :bgStyle="bgStyle" :number="totalNumber" :sign="sign" @playerItem="playerItem">
       <div :class="$style.bg" :style="bgStyle">
+        <i class="iconfont icon-zuo" @click="back"></i>
         <p>更新日期：{{rankGuanFang.showtime}}</p>
       </div>
-
     </song-list>
   </div>
 </template>
 <script>
 import NewList from '@/components/recommend/new-list'
-import { getAxios, getSongList, SUCCESS_CODE } from '@/js/api'
-import { mapGetters } from 'vuex'
+import { getAxios, SUCCESS_CODE } from '@/js/api'
+import { mapGetters, mapActions } from 'vuex'
 import SongList from '@/components/song-list/song-list'
 
 
@@ -29,7 +28,13 @@ export default {
   },
   methods: {
     back () {
-      this.$router.push('/rank')
+      this.$router.push(`/rank`)
+    },
+    playerItem (index) {
+      this.clickPlayerItem({
+        playList: this.rankDetailList,
+        index: index
+      })
     },
     getRankGFList () {
       let data = {
@@ -56,7 +61,10 @@ export default {
           this.totalNumber = res.data.total_song_num
         }
       })
-    }
+    },
+    ...mapActions([
+      'clickPlayerItem'
+    ])
   },
   components: {
     SongList
