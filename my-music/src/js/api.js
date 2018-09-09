@@ -14,20 +14,6 @@ export function getAxios (baseURL, url, data, callback) {
   })
 }
 
-
-
-// export function postApi () {
-//   axios({
-//     method: 'get',
-//     baseURL: '/bannerApi',
-//     url: '/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg?g_tk=5381&uin=0&format=json&inCharset=utf-8&outCharset=utf-8&notice=0&platform=h5&needNewCode=1&_=1533613038972'
-//   }).then((res) => {
-//     if (res.data.code === SUCCESS_CODE) return res.data.data.slider
-//   }).catch((err) => {
-//     console.log(err)
-//   })
-// }
-
 export function getJsonp (url, data, option) {
   url += (url.indexOf('?') < 0 ? '?' : '&') + param(data)
   return new Promise((resolve, reject) => {
@@ -60,7 +46,6 @@ export function getSongList (id) {
     outCharset: 'utf-8',
     notice: 0
   }
-
   return axios({
     method: 'get',
     url: url,
@@ -71,6 +56,45 @@ export function getSongList (id) {
     console.log(err)
   })
 }
+
+export function getSearchResult (w) {
+  const url = '/getSearchResult'
+  const data = {
+    g_tk: 5381,
+    notice: 0,
+    uin: 0,
+    format: 'json',
+    inCharset: 'utf-8',
+    outCharset: 'utf-8',
+    platform: 'h5',
+    needNewCode: 1,
+    w: w,
+    zhidaqu: 1,
+    catZhida: 1,
+    t: 0,
+    flag: 1,
+    ie: 'utf-8',
+    sem: 1,
+    aggr: 0,
+    perpage: 20,
+    n: 20,
+    p: 1,
+    remoteplace: 'txt.mqq.all'
+  }
+  return axios({
+    method: 'get',
+    url: url,
+    params: data
+  }).then((res) => {
+    return Promise.resolve(res.data)
+  }).catch((err) => {
+    console.log(err)
+  })
+}
+
+
+
+
 
 
 function param (data) {

@@ -1,18 +1,18 @@
 <template>
   <div :class="$style.player" v-show="playList.length">
-
     <div :class="$style.big_player" v-show="showBigPlayer">
       <div :class="$style.background">
-        <img :src="background(playSong.data)">
+        <img :src="background(newPlaySong)">
       </div>
 
       <div :class="$style.title">
-        <h2><i class="iconfont icon-zuo" :class="$style.icon" @click="back"></i>{{playSong.data.songname}}</h2> 
-        <p>{{singer(playSong)}}</p>
+        <h2><i class="iconfont icon-zuo" :class="$style.icon" @click="back"></i>{{ newPlaySong.songname}}</h2> 
+       
+        <p>{{singer(newPlaySong)}}</p>
       </div>
       
       <div :class="$style.cd_palyer">
-        <img :src="src(playSong.data)" :class="cdClass()">
+        <img :src="src(newPlaySong)" :class="cdClass()">
       </div>
       <div :class="$style.progress">
         <span :class="$style.time_start">0:00</span>
@@ -20,7 +20,7 @@
         <span :class="$style.time_end">3:45</span>
       </div>
       <div :class="$style.controller">
-        <i class="iconfont icon-suijibofang"></i>
+        <!-- <i class="iconfont icon-suijibofang"></i> -->
         <i class="iconfont icon-zuo" @click="prev()"></i>
         <i class="iconfont" :class="isBofangClass()" @click="isBofang()"></i>
         <i class="iconfont icon-you" @click="next()"></i>
@@ -30,11 +30,11 @@
 
     <div :class="$style.min_player" v-show="!showBigPlayer">
       <div :class="$style.s_img" @click="openBigPlayer">
-        <img :src="sSrc(playSong.data)" :class="smallCdClass()">
+        <img :src="sSrc(newPlaySong)" :class="smallCdClass()">
         </div>
       <div :class="$style.song" @click="openBigPlayer">
-        <p :class="$style.name">{{playSong.data.songname}}</p>
-        <p :class="$style.singer">{{singer(playSong)}}</p>
+        <p :class="$style.name">{{newPlaySong.songname || newPlaySong.title}}</p>
+        <p :class="$style.singer">{{singer(newPlaySong)}}</p>
       </div>
       <div :class="$style.icon" @click="isBofang()">
         <i class="iconfont" :class="isBofangClass()"></i>
@@ -43,15 +43,15 @@
         <i class="iconfont icon-Group-"></i>
       </div>
     </div>
-    <audio  ref="audio" :src="audioSrc(playSong.data)"></audio>
+    <audio  ref="audio" :src="audioSrc(newPlaySong)"></audio>
 
     <div :class="$style.bofang_list" v-show="show">
       <div :class="$style.shadow" @click="hideList()"></div>
       <div :class="$style.scroll_container">
         <scroll :data="playList" :songs="playList">
           <ul>           
-            <li v-for="(item, index) in playList" :key=index :class="$style.item">
-              <div :class="$style.text">
+            <li v-for="(item, index) in playList" :key=index :class="$style.item" @click="player(index)">
+              <div :class="$style.text" :style="bofaingStyle(index)">
                 <span :class="$style.songname">{{item.songname || item.data.songname}}</span> - <span :class="$style.singer">{{singer(item,'true')}}</span>
               </div>
             </li>
@@ -72,15 +72,13 @@ import Scroll from '@/common/scroll/scroll'
 export default {
   data () {
     return {
-      show: false
+      show: false,
     }
   },
   methods: {
     back () {
       // this.showBigPlayer = false  //[Vue warn]: Computed property "showBigPlayer" was assigned to but it has no setter ，需要用mapMutations改变值
       this.setShowBigPlayer(false)
-      // this.$router.go(-1)
-      // console.log(this.playSong)
     },
     openBigPlayer () {
       this.setShowBigPlayer(true)
@@ -109,20 +107,29 @@ export default {
     isBofangClass () {
       return this.playing ? 'icon-zanting1' : 'icon-bofang'
     },
+    bofaingStyle (index) {
+      if (this.playIndex === index) {
+        return 'color:red;'
+      }
+    },
     isBofang () {
       this.setPlaying(!this.playing)
     },
     prev () {
-      console.log(this.playIndex)
       let newIndex = this.playIndex - 1
-      if (this.playIndex === 0) newIndex = this.playList.length
+      if (this.playIndex === 0) newIndex = this.playList.length - 1
       this.setPlayingIndex(newIndex)
+      this.setPlaying(true)
     },
     next () {
-      console.log(this.playIndex)
       let newIndex = this.playIndex + 1
       if (this.playIndex === this.playList.length) newIndex = 0
       this.setPlayingIndex(newIndex)
+      this.setPlaying(true)
+    },
+    player (index) {
+      this.setPlayingIndex(index)
+      this.setPlaying(true)
     },
     showList () {
       this.show = true
@@ -137,6 +144,15 @@ export default {
     })
   },
   computed: {
+    newPlaySong () {
+      // console.log(this.playSong)
+      if (this.playSong.length === 0) return []
+      if (this.playSong.data) return this.playSong.data
+      else return this.playSong
+    },
+    title () {
+      return
+    },
     ...mapGetters([
       'playList',
       'showBigPlayer',
@@ -149,7 +165,7 @@ export default {
     Scroll
   },
   watch: {
-    playSong (y) {
+    newPlaySong (y) {
       setTimeout(() => {//不加延时会报错
         this.$refs.audio.play()
       }, 20)
@@ -339,6 +355,7 @@ export default {
       ul {
         z-index: 200;
         background-color: #fff;
+        border-radius: 10px 10px 0 0;
         .text {
           color: #000;
           border-bottom: 1px solid #ddd;

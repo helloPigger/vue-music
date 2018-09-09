@@ -1,7 +1,7 @@
 
 import { playMode } from '@/js/config'
 const state = {
-  recommend: {},
+  recommend: [],
   recommendItem: {},
   rankGuanFang: {},
   
@@ -9,6 +9,7 @@ const state = {
   playMode: playMode.sequence,
   playList: [],
   playIndex: -1,
-  showBigPlayer:false
+  showBigPlayer:false,
+  showRecoMore:false
 }
 export default state

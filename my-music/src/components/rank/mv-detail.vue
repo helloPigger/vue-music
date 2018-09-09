@@ -1,9 +1,9 @@
 <template>
   <div :class="$style.mv_detail">
-    <h2 :class="$style.title"><i class="iconfont icon-zuo"  @click="back"></i></h2> 
     <div :class="$style.content">
       
       <div :class="$style.bg" :style="bgStyle">
+        <i class="iconfont icon-zuo" @click="back"></i>
         <p v-show="mvDetailList.length">更新日期：{{date}}</p>
       </div>
 
@@ -114,11 +114,7 @@ export default {
   left: 0;
   background-color: #fff;
   z-index: 200;
-  .title {
-    @include topTitle();
-  }
   .content {
-    margin-top: 40px;
     height: 100%;
     .bg {
       width: 100%;

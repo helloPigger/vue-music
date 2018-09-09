@@ -1,5 +1,6 @@
 <template>
   <div :class="$style.rank" class="rank">
+    <scroll :songs="rangGFList" :class="$style.scroll">
     <div :class="$style.guanfang_list">
       <h2 :class="$style.title" v-show="rangGFList.length">官方榜</h2>
       <div :class="$style.container">
@@ -16,15 +17,17 @@
       </div>
     </div>
 
-    <div :class="$style.quanqiu_list">
-    <h2 v-show="rangQQList.length">全球榜</h2>  
-    <div :class="$style.container">
-      <div v-for="(item, index) in rangQQList" :key=index @click="quanqiuList(item)">
-        <img v-lazy="item.MacListPicUrl">
-        <p :class="$style.title">{{item.ListName}}</p>
+    <!-- <div :class="$style.quanqiu_list">
+      <h2 v-show="rangQQList.length">全球榜</h2>  
+      <div :class="$style.container">
+        <div v-for="(item, index) in rangQQList" :key=index @click="quanqiuList(item)">
+          <img v-lazy="item.MacListPicUrl">
+          <p :class="$style.title">{{item.ListName}}</p>
+        </div>
       </div>
-    </div>
-   </div>
+   </div> -->
+   </scroll>
+
     <router-view/>
     <loading v-show="!rankList.length"/>
   </div>
@@ -33,8 +36,9 @@
 <script>
 import { getJsonp } from '@/js/api'
 import { getAxios, SUCCESS_CODE } from '@/js/api'
-import { mapMutations } from 'vuex'
+import { mapMutations} from 'vuex'
 import Loading from '@/common/loading/loading'
+import Scroll from '@/common/scroll/scroll'
 
 
 export default {
@@ -90,7 +94,8 @@ export default {
     })
   },
   components: {
-    Loading
+    Loading,
+    Scroll
   }
 }
 </script>
@@ -99,69 +104,76 @@ export default {
 @import "@/common/scss/mixin.scss";
 @import "@/common/scss/variable.scss";
 .rank {
-  margin-top: 105px;
-  .guanfang_list {
-    padding-top: 20px;
-    .title {
-      @include title();
-    }
-    .container {
-      .item {
-        @include flex($justify: flex-start);
-        padding: 6px 0 6px 10px;
-        border-bottom: 1px solid #ddd;
-        position: relative;
-        .image {
-          width: 30%;
-          img {
-            height: auto;
-            width: 100%;
-            vertical-align: middle;
+  position: fixed;
+  width: 100%;
+  top: 105px;
+  bottom: 0;
+  .scroll {
+    height: 100%;
+    overflow: hidden;
+    .guanfang_list {
+      padding-top: 20px;
+      .title {
+        @include title();
+      }
+      .container {
+        .item {
+          @include flex($justify: flex-start);
+          padding: 6px 0 6px 10px;
+          border-bottom: 1px solid #ddd;
+          position: relative;
+          .image {
+            width: 30%;
+            img {
+              height: auto;
+              width: 100%;
+              vertical-align: middle;
+            }
           }
-        }
-        .text {
-          padding-left: 10px;
-          width: 70%;
-          h2 {
-            @include nowrap();
-            font-size: 13px;
-            height: 24px;
-            line-height: 24px;
+          .text {
+            padding-left: 10px;
+            width: 70%;
+            h2 {
+              @include nowrap();
+              font-size: 13px;
+              height: 24px;
+              line-height: 24px;
+            }
           }
         }
       }
     }
-  }
-  .quanqiu_list {
-    padding-top: 20px;
-    h2 {
-      @include title();
-      .icon_you {
-        color: #999;
+    .quanqiu_list {
+      padding-top: 20px;
+      h2 {
+        @include title();
+        .icon_you {
+          color: #999;
+        }
       }
-    }
-    .container {
-      @include flex($wrap: wrap);
-      justify-content: flex-start;
-      padding: 0 10px;
+      .container {
+        @include flex($wrap: wrap);
+        justify-content: flex-start;
+        padding: 0 10px;
 
-      div {
-        width: 33.3%;
-        padding-right: 2px;
-        padding-bottom: 16px;
-        position: relative;
-        &:nth-child(3n) {
-          padding-right: 0;
-        }
-        img {
-          width: 100%;
-          height: auto;
-        }
-        .title {
-          @include nowraps();
-          padding: 6px 2px 0 6px;
-          line-height: 1.2;
-          font-size: 13px;
+        div {
+          width: 33.3%;
+          padding-right: 2px;
+          padding-bottom: 16px;
+          position: relative;
+          &:nth-child(3n) {
+            padding-right: 0;
+          }
+          img {
+            width: 100%;
+            height: auto;
+          }
+          .title {
+            @include nowraps();
+            padding: 6px 2px 0 6px;
+            line-height: 1.2;
+            font-size: 13px;
+          }
         }
       }
     }

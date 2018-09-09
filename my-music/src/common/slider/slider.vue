@@ -1,9 +1,9 @@
 <template>
   <swiper :options="swiperOption" v-if="items.length">
     <swiper-slide v-for="(item,index) in items" :key=index>
-      <router-link :to="{name: item.linkUrl}">
+      <!-- <router-link :to="{name: item.linkUrl}"> -->
         <img :src="item.picUrl">
-      </router-link>
+      <!-- </router-link> -->
     </swiper-slide>
     <div class="swiper-pagination"  slot="pagination" v-if="swiperOption.pagination"></div>
   </swiper>

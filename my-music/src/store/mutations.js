@@ -25,6 +25,9 @@ const mutations = {
   },
   [mutationTypes.SET_SHOW_BINGPLAYER] (state, boolean) {
     state.showBigPlayer = boolean
+  },
+  [mutationTypes.SET_SHOW_RECOMORE] (state, boolean) {
+    state.showRecoMore = boolean
   }
 }
 

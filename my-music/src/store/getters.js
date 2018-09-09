@@ -7,6 +7,7 @@ export const playMode = state => state.playMode
 export const playList = state => state.playList
 export const playIndex = state => state.playIndex
 export const showBigPlayer = state => state.showBigPlayer
+export const showRecoMore = state => state.showRecoMore
 export const playSong = state => {
   return state.playList[state.playIndex] || {}//不是最基础数据，不用放在state.js
 }

@@ -1,16 +1,18 @@
 <template>
-  <div :class="$style.recom_more" class="recom-more">
+  <div :class="$style.recom_more" v-show="showRecoMore">
     <h2><i class="iconfont icon-zuo" @click="back"></i>为你推荐</h2>  
-    <div :class="$style.container">
-      <div v-for="(item, index) in recommend" :key=index @click="recomMoreList(item)">
-        <img v-lazy="item.cover">
-        <span :class="$style.num">
-          {{getListenNumber(item.listen_num)}}
-          <span class="iconfont icon-erji" :class="$style.icon"></span>
-        </span>
-        <p :class="$style.title">{{item.title}}</p>
-      </div>
-    </div>
+      <scroll :songs="recommend" :data="recommend">
+        <div :class="$style.container">
+          <div v-for="(item, index) in recommend" :class="$style.item" :key=index @click="recomMoreList(item)">
+            <img v-lazy="item.cover">
+            <span :class="$style.num">
+              {{getListenNumber(item.listen_num)}}
+              <span class="iconfont icon-erji" :class="$style.icon"></span>
+            </span>
+            <p :class="$style.title">{{item.title}}</p>
+          </div>
+        </div>
+      </scroll>
     <loading v-show="!recommend.length"/>
     </div>
 </template>
@@ -18,6 +20,8 @@
 <script>
 import Loading from '@/common/loading/loading'
 import { mapMutations, mapGetters } from 'vuex'
+import Scroll from '@/common/scroll/scroll'
+
 export default {
   methods: {
     getListenNumber (num) {
@@ -28,6 +32,7 @@ export default {
       }
     },
     back () {
+      this.setShowRecoMore(false)
       this.$router.push('/recommend')
     },
     recomMoreList (item) {
@@ -37,15 +42,19 @@ export default {
       this.setRecommendItem(item)
     },
     ...mapMutations({
-      setRecommendItem: 'SET_RECOMMENDITEM'
+      setRecommendItem: 'SET_RECOMMENDITEM',
+      setShowRecoMore: 'SET_SHOW_RECOMORE'
+
     })
   },
   components: {
-    Loading
+    Loading,
+    Scroll
   },
   computed: {
     ...mapGetters([
-      'recommend'
+      'recommend',
+      'showRecoMore'
     ])
   }
 }
@@ -61,14 +70,19 @@ export default {
   bottom: 0;
   z-index: 200;
   background-color: $bg-color;
+  padding-bottom: 20px;
 
   h2 {
-    @include topTitle();
+    height: 40px;
+    line-height: 40px;
+    color: #fff;
+    font-size: 17px;
+    background-color: #fe666d;
   }
   .container {
     @include flex($wrap: wrap);
-    margin-top: 40px;
-    div {
+    // margin-top: 10px;
+    .item {
       width: 33.3%;
       padding-right: 2px;
       padding-bottom: 16px;

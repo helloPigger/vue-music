@@ -23,10 +23,6 @@ export default new Router({
       component: Recommend,
       children: [
         {
-          path: 'recommendMore',
-          component: RecommendMore,
-        },
-        {
           path: ':id',
           component: RecommendDetail
         }

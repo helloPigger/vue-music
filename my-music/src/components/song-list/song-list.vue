@@ -4,7 +4,7 @@
       <slot/>
       <scroll :class="$style.list" :songs="items" :data="items" @scroll="scroll">
         <ul>
-          <li :class="$style.title" v-show="items.length"><i class="iconfont icon-bofang" :class="$style.icon"></i>播放全部（共{{number}}首）</li>            
+          <!-- <li :class="$style.title" v-show="items.length"><i class="iconfont icon-bofang" :class="$style.icon"></i>播放全部（共{{number}}首）</li>             -->
           <li v-for="(item, index) in items" :key=index :class="$style.item" @click="playerItem(index)">
             <div :class="$style.text">
               <h2><span v-show="sign">{{index + 1}} . </span>{{item.songname || item.data.songname}}</h2>
@@ -96,10 +96,9 @@ export default {
   background-color: #fff;
   z-index: 200;
   .title {
-    @include topTitle();
+    font-size: 17px;
   }
   .content {
-    // margin-top: 40px;
     height: 100%;
     .list {
       background-color: #fff;

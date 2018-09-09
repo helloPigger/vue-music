@@ -1,5 +1,5 @@
 <template>
-    <swiper :options="swiperOption"  v-if="songs.length"  @slider-move="touchmove">
+    <swiper :options="swiperOption"  v-if="songs.length" @slider-move="touchmove">
       <swiper-slide class="content">
         <slot/>
       </swiper-slide>

@@ -11,7 +11,7 @@ export function timestampToDate (timestamp) {
 }
 
 export function getSinger (item, albumname) {
-  let singer = item.singer || item.data.singer
+  let singer = (item.data ? item.data.singer : item.singer) || []
   let singerName = ''
   let lastSingerName = ''
   for (let i = 0, length = singer.length; i < length; i++) {
@@ -19,7 +19,6 @@ export function getSinger (item, albumname) {
     if (i === length - 1) lastSingerName = singer[i].name
   }
   singerName += lastSingerName
-  if (albumname) return item.albumname || item.data.albumname + " - " + singerName
+  if (albumname) return (item.data ? item.data.albumname : item.albumname) + " - " + singerName
   else return singerName
-
 }

@@ -1,9 +1,13 @@
 <template>
-  <div class="recommend">
+  <div class="recommend" :class="$style.recommend">
     <slider :swiperOption=options :items="bannerList"/>
-    <recommend-list title="为你推荐" :items="recommendList6" :itemsAll="recommendList" @recomMore="recomMore" @recomList="recomList"></recommend-list>
+    <div :class="$style.scroll_container">
+      <scroll :songs="recommendList" :data="recommendList" :class="$style.scroll">
+        <recommend-list title="为你推荐" :items="recommendList6" :itemsAll="recommendList" @recomMore="recomMore" @recomList="recomList"></recommend-list>
+        <new-list title = "最新音乐" :items="newMusicList" @player="player"></new-list>
+      </scroll>
+    </div>
     <router-view/>
-    <new-list title = "最新音乐" :items="newMusicList" @player="player"></new-list>
     <loading v-show="!recommendList.length"/>
   </div>
 </template>
@@ -14,7 +18,9 @@ import Slider from '@/common/slider/slider'
 import RecommendList from '@/components/recommend/recommend-list'
 import NewList from '@/components/recommend/new-list'
 import Loading from '@/common/loading/loading'
-import { mapMutations } from 'vuex'
+import { mapMutations, mapActions } from 'vuex'
+import Scroll from '@/common/scroll/scroll'
+
 
 export default {
   data () {
@@ -39,9 +45,7 @@ export default {
   },
   methods: {
     recomMore (itemsAll) {
-      this.$router.push({
-        path: '/recommend/recommendMore'
-      })
+      this.setShowRecoMore(true)
       this.setRecommend(itemsAll)
     },
     recomList (item) {
@@ -51,9 +55,12 @@ export default {
       //此id需传到二级路由页面 vuex
       this.setRecommendItem(item)
     },
-    player (item) {
-      this.$router.push(`/player`)
-      console.log(item)
+    player (index) {
+      // this.clickPlayerItem({
+      //   playList: this.newMusicList,
+      //   index: index
+      // })
+      console.log("数据格式不一致，需处理格式后跳转到播放器")
     },
     getBannerList () {
       const data = {
@@ -91,26 +98,31 @@ export default {
           this.recommendList = res.data.recomPlaylist.data.v_hot
           this.recommendList6 = this.recommendList.slice(0, 6)
           this.newMusicList = res.data.new_song.data.song_list
+          // console.log(this.newMusicList)
         }
       })
     },
     ...mapMutations({
       setRecommend: 'SET_RECOMMEND',
-      setRecommendItem: 'SET_RECOMMENDITEM'
-    })
+      setRecommendItem: 'SET_RECOMMENDITEM',
+      setShowRecoMore: 'SET_SHOW_RECOMORE'
+    }),
+    // ...mapActions([
+    //   'clickPlayerItem'
+    // ])
   },
   components: {
     Slider,
     RecommendList,
     NewList,
-    Loading
+    Loading,
+    Scroll
   }
 }
 </script>
 
 <style lang="scss">
 .recommend {
-  margin-top: 105px;
   .swiper-wrapper {
     .swiper-slide {
       img {
@@ -121,6 +133,21 @@ export default {
   }
 }
 </style>
+<style lang="scss" module>
+.recommend {
+  margin-top: 105px;
+  .scroll_container {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    .scroll {
+      height: 100%;
+      overflow: hidden;
+    }
+  }
+}
+</style>
+
 
 
 

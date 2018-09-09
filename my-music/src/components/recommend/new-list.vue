@@ -1,9 +1,11 @@
 <template>
   <div :class="$style.new_list">
     <h2 :class="$style.title" v-show="items.length">{{title}}</h2>
+
+    <!-- <scroll :songs="items" :data="items"> -->
     <div :class="$style.container">
       <ul>
-        <li v-for="(item, index) in items" :key=index :class="$style.item" @click="player(item)">
+        <li v-for="(item, index) in items" :key=index :class="$style.item" @click="player(index)">
           <div :class="$style.image">
             <img v-lazy="getImgSrc(item)">
           </div>
@@ -14,11 +16,14 @@
         </li>
       </ul>
     </div>
+    <!-- </scroll> -->
   </div>
 </template>
 
 <script>
 import { getSinger } from '@/js/utils'
+import Scroll from '@/common/scroll/scroll'
+
 export default {
   props: {
     title: {
@@ -33,18 +38,20 @@ export default {
     }
   },
   methods: {
-    player (item) {
-      this.$emit('player', item)
+    player (index) {
+      this.$emit('player', index)
     },
     getImgSrc (item) {
       let src = item.album.mid
       return `//y.gtimg.cn/music/photo_new/T002R90x90M000${src}.jpg?max_age=2592000`
     },
     singer (item) {
-     return getSinger(item)
+      return getSinger(item)
     }
+  },
+  components: {
+    Scroll
   }
-
 }
 </script>
 
@@ -56,6 +63,7 @@ export default {
     @include title();
   }
   .container {
+    // height: 300px;
     .item {
       @include flex($justify: flex-start);
       height: 60px;

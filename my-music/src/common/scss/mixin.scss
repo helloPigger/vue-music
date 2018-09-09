@@ -36,17 +36,3 @@
         background-color: $theme-color;
     }
 }
-
-@mixin topTitle($paddingL:9px, $fontsize:17px, $height:40px, $marginB:14px) {
-    height: $height;
-    line-height: $height;
-    color: #fff;
-    font-size: $fontsize;
-    position: fixed;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 201;
-    background-color: #FE666D;
-}

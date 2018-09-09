@@ -38,7 +38,7 @@
   position: fixed;
   top: 64px;
   left: 0;
-  z-index: 100;
+  // z-index: 100;
   div {
     span {
       font-size: 15px;
